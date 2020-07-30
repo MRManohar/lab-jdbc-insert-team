@@ -1,11 +1,15 @@
 package controller;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 import dao.CityDAO;
 import dao.TeamDAO;
 import model.City;
 import model.Team;
+import utility.ConnectionManager;
 
 public class Main{
 	public static void main(String[] args) throws Exception {
@@ -44,6 +48,20 @@ public class Main{
 		
 		in.close();
 	}
-	private static void displayData() {
+	private static void displayData() throws Exception {
+		ConnectionManager cm = new ConnectionManager();
+		Connection con = cm.getConnection();
+		
+		String sql = "select * from team";
+		
+		Statement st = con.createStatement();
+		
+		ResultSet re = st.executeQuery(sql);
+		
+		while(re.next()) {
+			System.out.println(re.getString(2)+"\t"+re.getString(3)+"\t"+re.getString(6));
+		}
+		
+		con.close();
 	}
 }
